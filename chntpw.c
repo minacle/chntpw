@@ -37,9 +37,11 @@
  * 2000-jan: Attempt to detect and disable syskey
  * 1999-feb: Now able to browse registry hives. (write support to come)
  * See HISTORY.txt for more detailed info on history.
+ * See git log for more recent changes.
  *
  *****
  *
+ * Copyright (c) 2021 Mina Her.
  * Copyright (c) 1997-2014 Petter Nordahl-Hagen.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -91,7 +93,7 @@
 #include "ntreg.h"
 #include "sam.h"
 
-const char chntpw_version[] = "chntpw version 1.00 140201, (c) Petter N Hagen";
+const char chntpw_version[] = "chntpw version 1.0.1, (c) 2021 Mina Her, 1997-2014 Petter N Hagen";
 
 extern char *val_types[REG_MAX+1];
 
