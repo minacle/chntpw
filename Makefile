@@ -15,9 +15,7 @@ CFLAGS= -DDOCRYPTO -g -I. -I$(OSSLINC) -Wall
 OSSLLIB=$(OSSLPATH)/lib
 
 
-# This is to link with whatever we have, SSL crypto lib we put in static
-#LIBS=-L$(OSSLLIB) $(OSSLLIB)/libcrypto.a
-LIBS=-L$(OSSLLIB)
+LIBS=-L$(OSSLLIB) $(OSSLLIB)/libcrypto.a
 
 
 all: chntpw cpnt reged samusrgrp sampasswd
