@@ -11,7 +11,7 @@ OSSLINC=$(OSSLPATH)/include
 
 CC=gcc
 
-CFLAGS= -DUSEOPENSSL -g -I. -I$(OSSLINC) -Wall
+CFLAGS= -DDOCRYPTO -g -I. -I$(OSSLINC) -Wall
 OSSLLIB=$(OSSLPATH)/lib
 
 
