@@ -338,7 +338,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
    unsigned short acb;
    struct user_V *v;
 
-#ifdef DOCRYPT
+#ifdef DOCRYPTO
    int dontchange = 0;
    int i;
    char md4[32],lanman[32];
@@ -523,7 +523,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
    }
 
 
-#ifdef DOCRYPT
+#ifdef DOCRYPTO
    if (*newp == '9') {   /* Set new password */
 
      if (dontchange) {
@@ -591,7 +591,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
 
 
    } /* new password */
-#endif /* DOCRYPT */
+#endif /* DOCRYPTO */
 
    if (pl == 1 && *newp == '1') {
      /* Setting hash lengths to zero seems to make NT think it is blank
