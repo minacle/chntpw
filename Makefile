@@ -12,13 +12,8 @@ OSSLINC=$(OSSLPATH)/include
 
 CC=gcc
 
-# Force 32 bit
-CFLAGS= -DUSEOPENSSL -g -I. -I$(OSSLINC) -Wall -m32 
+CFLAGS= -DUSEOPENSSL -g -I. -I$(OSSLINC) -Wall
 OSSLLIB=$(OSSLPATH)/lib
-
-# 64 bit if default for compiler setup
-#CFLAGS= -DUSEOPENSSL -g -I. -I$(OSSLINC) -Wall
-#OSSLLIB=$(OSSLPATH)/lib64
 
 
 # This is to link with whatever we have, SSL crypto lib we put in static
