@@ -6,7 +6,6 @@
 # See INSTALL for more info.
 #
 
-#SSLPATH=/usr/local/ssl
 OSSLPATH=/usr
 OSSLINC=$(OSSLPATH)/include
 
