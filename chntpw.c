@@ -152,7 +152,10 @@ void str_to_key(unsigned char *str,unsigned char *key)
 	for (i=0;i<8;i++) {
 		key[i] = (key[i]<<1);
 	}
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 	DES_set_odd_parity((DES_cblock *)key);
+#pragma clang diagnostic pop
 }
 
 /*
@@ -201,12 +204,15 @@ void E1(unsigned char *k, unsigned char *d, unsigned char *out)
   DES_cblock deskey;
 
   str_to_key(k,(unsigned char *)deskey);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #ifdef __FreeBSD__
   DES_set_key(&deskey,&ks);
 #else /* __FreeBsd__ */
   DES_set_key((DES_cblock *)deskey,&ks);
 #endif /* __FreeBsd__ */
   DES_ecb_encrypt((DES_cblock *)d,(DES_cblock *)out, &ks, DES_ENCRYPT);
+#pragma clang diagnostic pop
 }
 
 #endif   /* DOCRYPTO */
@@ -340,9 +346,12 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
    int i;
    char md4[32],lanman[32];
    char newunipw[34], despw[20], newlanpw[16], newlandes[20];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
    DES_key_schedule ks1, ks2;
    DES_cblock deskey1, deskey2;
    MD4_CTX context;
+#pragma clang diagnostic pop
    unsigned char digest[16];
    unsigned char x1[] = {0x4B,0x47,0x53,0x21,0x40,0x23,0x24,0x25};
 #endif
@@ -457,6 +466,8 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
    }
 
 #ifdef DOCRYPTO
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
    /* Get the two decrpt keys. */
    sid_to_key1(rid,(unsigned char *)deskey1);
    DES_set_key((DES_cblock *)deskey1,&ks1);
@@ -474,6 +485,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
 		   (DES_cblock *)lanman, &ks1, DES_DECRYPT);
    DES_ecb_encrypt((DES_cblock *)(vp+lmpw_offs + 8),
 		   (DES_cblock *)&lanman[8], &ks2, DES_DECRYPT);
+#pragma clang diagnostic pop
 
    if (gverbose) {
      hexprnt("MD4 hash     : ",(unsigned char *)md4,16);
@@ -541,9 +553,12 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
 
      /*   printf("Ucase Lanman: %s\n",newlanpw); */
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
      MD4_Init (&context);
      MD4_Update (&context, newunipw, pl<<1);
      MD4_Final (digest, &context);
+#pragma clang diagnostic pop
 
      if (gverbose) hexprnt("\nNEW MD4 hash    : ",digest,16);
 
@@ -552,6 +567,8 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
 
      if (gverbose) hexprnt("NEW LANMAN hash : ",(unsigned char *)lanman,16);
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
      /* Encrypt the NT md4 password hash as two 8 byte blocks. */
      DES_ecb_encrypt((DES_cblock *)digest,
 		     (DES_cblock *)despw, &ks1, DES_ENCRYPT);
@@ -562,6 +579,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
 		     (DES_cblock *)newlandes, &ks1, DES_ENCRYPT);
      DES_ecb_encrypt((DES_cblock *)(lanman+8),
 		     (DES_cblock *)&newlandes[8], &ks2, DES_ENCRYPT);
+#pragma clang diagnostic pop
 
      if (gverbose) {
        hexprnt("NEW DES crypt   : ",(unsigned char *)despw,16);
