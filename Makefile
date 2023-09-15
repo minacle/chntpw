@@ -9,7 +9,7 @@
 OSSLPATH=/usr
 OSSLINC=$(OSSLPATH)/include
 
-CC=gcc
+CC=clang
 
 CFLAGS= -DDOCRYPTO -g -I. -I$(OSSLINC) -Wall
 OSSLLIB=$(OSSLPATH)/lib
