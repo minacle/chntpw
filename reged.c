@@ -5,11 +5,11 @@
  * - Export (parts) of registry hive to .reg file
  * - Import .reg file into registry hive
  * - Do interactive registry edit
- * 
+ *
  * Changes:
  * 2011 - may: Trace flags moved here.
  * 2011 - apr: Added options for import and flags for safe modes..
- * 
+ *
  *
  *****
  *
@@ -25,7 +25,7 @@
  * GNU General Public License for more details.
  *
  * See file GPL.txt for the full license.
- * 
+ *
  *****
  */
 
@@ -75,7 +75,7 @@ void usage(void)
 
 int main(int argc, char **argv)
 {
-   
+
   int export = 0, edit = 0, import = 0;
   int d = 0;
   int autocommit = 0, update = 0;
@@ -87,9 +87,9 @@ int main(int argc, char **argv)
   char c;
   char yn[10];
   FILE *ch;
-  
+
   char *options = "vhtxCLeINE";
-  
+
   printf("%s\n",reged_version);
   while((c=getopt(argc,argv,options)) > 0) {
     switch(c) {
@@ -123,20 +123,20 @@ int main(int argc, char **argv)
     if (gverbose) {
       printf("hivename: %s, prefix: %s, key: %s, output: %s\n",hivename,prefix,key,outputname);
     }
-    
+
     if (!hivename || !*hivename || !prefix || !*prefix || !key || !*key || !outputname || !*outputname) {
       usage(); exit(1);
     }
-    
+
     if (!(hive[no_hives] = openHive(hivename,HMODE_RO|mode))) {
       fprintf(stderr,"Unable to open/read hive %s, exiting..\n",hivename);
       exit(1);
     }
-    
+
     export_key(hive[no_hives], 0, key, outputname, prefix);
-    
+
     no_hives++;
-    
+
   }
 
   if (import) { /* Call import. Works only on one hive at a time */
@@ -146,23 +146,23 @@ int main(int argc, char **argv)
     if (gverbose) {
       printf("hivename: %s, prefix: %s\n",hivename,prefix);
     }
-    
+
     if (!hivename || !*hivename || !prefix || !*prefix || !inputname || !*inputname) {
       usage(); exit(1);
     }
-    
+
     if (!(hive[no_hives] = openHive(hivename,HMODE_RW|mode))) {
       fprintf(stderr,"Unable to open/read hive %s, exiting..\n",hivename);
       exit(1);
     }
-    
+
     import_reg(hive[no_hives], inputname, prefix);
-    
+
     no_hives++;
     update = 1;
     if (edit) regedit_interactive(hive, no_hives);
     edit = 0;
-    
+
   }
 
   if (edit) {  /* Call editor. Rest of arguments are considered hives to load */
@@ -180,12 +180,12 @@ int main(int argc, char **argv)
     update = 1;
   }
 
-  
+
   if (update) {  /* run for functions that can have changed things */
     printf("\nHives that have changed:\n #  Name\n");
     for (il = 0; il < no_hives; il++) {
       if (hive[il]->state & HMODE_DIRTY) {
-	if (!logchange && !autocommit) { 
+	if (!logchange && !autocommit) {
 	  printf("%2d  <%s>",il,hive[il]->filename);
 	  if (hive[il]->state & HMODE_DIDEXPAND)
 	    printf(" WARNING: File was expanded! Experimental! Use at own risk!\n");

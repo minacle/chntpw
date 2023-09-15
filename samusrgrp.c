@@ -1,6 +1,6 @@
 /*
  * samusrgrp.c - SAM database, add or remove user in a group
- * 
+ *
  * Command line utility, non-inreractive to add or remove a user to/from
  * a local group in the SAM database, list groups with memberships etc
  *
@@ -28,7 +28,7 @@
  * GNU General Public License for more details.
  *
  * See file GPL.txt for the full license.
- * 
+ *
  *****
  */
 
@@ -62,8 +62,8 @@ void cmd_machinesid(void)
 {
   struct sid_binary sid;
   char *sidstr;
- 
-  if (sam_get_machine_sid(hive[H_SAM], (char *)&sid)) {  
+
+  if (sam_get_machine_sid(hive[H_SAM], (char *)&sid)) {
     sidstr = sam_sid_to_string(&sid);
     puts(sidstr);
     FREE(sidstr);
@@ -85,7 +85,7 @@ int cmd_usrgrp(char *user, char *grp, int what, int human)
   if ((H_SAM < 0) || (!user)) return(1);
 
   if (*user == '0' && *(user+1) == 'x') sscanf(user,"%i",&rid);
-  
+
   if (!rid) { /* Look up username */
     /* Extract the unnamed value out of the username-key, value is RID  */
     snprintf(s,180,"\\SAM\\Domains\\Account\\Users\\Names\\%s\\@",user);
@@ -163,7 +163,7 @@ void usage(void)
 
 int main(int argc, char **argv)
 {
-   
+
   extern int optind;
   extern char* optarg;
 
@@ -181,7 +181,7 @@ int main(int argc, char **argv)
   char *grp = NULL;
 
   char *options = "aru:g:vNEthlLHs";
-  
+
   if (!strcmp(argv[0],"samusrtogrp")) what = 1;
   if (!strcmp(argv[0],"samusrfromgrp")) what = 2;
   if (!strcmp(argv[0],"samgrplist")) what = 3;
@@ -277,16 +277,16 @@ int main(int argc, char **argv)
   }
 
   /* write registry hive (if needed) */
-  
+
   wret = 0;
   for (il = 0; il < no_hives; il++) {
     wret |= writeHive(hive[il]);
     if (hive[il]->state & HMODE_DIDEXPAND)
-      fprintf(stderr," WARNING: Registry file %s was expanded! Experimental! Use at own risk!\n",hive[il]->filename);  
+      fprintf(stderr," WARNING: Registry file %s was expanded! Experimental! Use at own risk!\n",hive[il]->filename);
     while (no_hives > 0)
       closeHive(hive[--no_hives]);
   }
-  
+
   return(ret | wret);
 }
 

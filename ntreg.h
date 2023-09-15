@@ -1,6 +1,6 @@
 /*
  * ntreg.h - NT Registry Hive access library, constants & structures
- * 
+ *
  * NOTE: defines are not frozen. It can and will change every release.
  *
  *****
@@ -18,8 +18,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  * See file LGPL.txt for the full license.
- * 
- */ 
+ *
+ */
 
 
 #ifndef _INCLUDE_NTREG_H
@@ -142,7 +142,7 @@ struct lf_key {
   short id;         /* 0x0000	Word	ID: ASCII-"lf" = 0x666C or "lh" = 0x686c */
   short no_keys;    /* 0x0002	Word	number of keys          */
                     /* 0x0004	????	Hash-Records            */
-  
+
  union {
 
     struct lf_hash {
@@ -227,7 +227,7 @@ struct vk_key {
   int32_t  len_data;   /* 0x0004	D-Word	length of the data       */
   int32_t  ofs_data;   /* 0x0008	D-Word	Offset of Data           */
   int32_t  val_type;   /* 0x000C	D-Word	Type of value            */
-  short flag;       /* 0x0010	Word	Flag                     
+  short flag;       /* 0x0010	Word	Flag
                                 0x1 ANSI encoding                */
   short dummy1;     /* 0x0012	Word	Unused (data-trash)      */
   char  keyname[1]; /* 0x0014	????	Name                     */

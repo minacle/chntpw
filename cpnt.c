@@ -19,8 +19,8 @@
  * GNU General Public License for more details.
  *
  * See file GPL.txt for the full license.
- * 
- */ 
+ *
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
       printf("cpnt: error while writing: %s\n",strerror(e));
       going = 0;
     }
-    
+
   }
 
   close(sf);

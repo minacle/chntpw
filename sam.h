@@ -1,6 +1,6 @@
 /*
  * sam.h - known structures in the SAM hive of NT registry
- * 
+ *
  *****
  *
  * NTREG - Window registry file reader / writer library
@@ -17,7 +17,7 @@
  * Lesser General Public License for more details.
  * See file LGPL.txt for the full license.
  *
- */ 
+ */
 
 #ifndef _INCLUDE_SAM_H
 #define _INCLUDE_SAM_H 1

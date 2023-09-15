@@ -30,10 +30,10 @@ reged: reged.o ntreg.o edlib.o
 	$(CC) $(CFLAGS) -o reged reged.o ntreg.o edlib.o
 
 samusrgrp: samusrgrp.o ntreg.o libsam.o
-	$(CC) $(CFLAGS) -o samusrgrp samusrgrp.o ntreg.o libsam.o 
+	$(CC) $(CFLAGS) -o samusrgrp samusrgrp.o ntreg.o libsam.o
 
 sampasswd: sampasswd.o ntreg.o libsam.o
-	$(CC) $(CFLAGS) -o sampasswd sampasswd.o ntreg.o libsam.o 
+	$(CC) $(CFLAGS) -o sampasswd sampasswd.o ntreg.o libsam.o
 
 
 

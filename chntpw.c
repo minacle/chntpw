@@ -5,7 +5,7 @@
  * the "libsam" library for user / group handling
  * it's main purpose is to reset password based information.
  * It can also call the registry editor etc
- 
+
  * 2013-may: Added group add/remove in user edit (using new functions
  *           in sam library)
  * 2013-apr: Changed around a bit on some features, chntpw is now
@@ -54,14 +54,14 @@
  * GNU General Public License for more details.
  *
  * See file GPL.txt for the full license.
- * 
+ *
  *****
  *
  * Information and ideas taken from pwdump by Jeremy Allison.
  *
  * More info from NTCrack by Jonathan Wilkins.
- * 
- */ 
+ *
+ */
 
 #include <stdio.h>
 #include <sys/types.h>
@@ -133,7 +133,7 @@ int max_sam_lock = 0;
 void make_lanmpw(char *p, char *lm, int len)
 {
    int i;
-   
+
    for (i=0; i < 15; i++) lm[i] = 0;
    for (i=0; i < len; i++) lm[i] = toupper(p[i]);
 }
@@ -186,7 +186,7 @@ void sid_to_key1(uint32_t sid,unsigned char deskey[8])
 void sid_to_key2(uint32_t sid,unsigned char deskey[8])
 {
 	unsigned char s[7];
-	
+
 	s[0] = (unsigned char)((sid>>24) & 0xFF);
 	s[1] = (unsigned char)(sid & 0xFF);
 	s[2] = (unsigned char)((sid>>8) & 0xFF);
@@ -229,7 +229,7 @@ void promote_user(int rid)
   char yn[5];
 
   if (!rid || (H_SAM < 0)) return;
-  
+
   printf("\n=== PROMOTE USER\n\n");
   printf("Will add the user to the administrator group (0x220)\n"
 	 "and to the users group (0x221). That should usually be\n"
@@ -323,11 +323,11 @@ void interactive_addusrgrp(int rid)
  * rid - the users RID, required for the DES decrypt stage
  *
  * Some of this is ripped & modified from pwdump by Jeremy Allison
- * 
+ *
  */
 char *change_pw(char *buf, int rid, int vlen, int stat)
 {
-   
+
    int pl;
    char *vp;
    static char username[128],fullname[128];
@@ -357,9 +357,9 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
 
    v = (struct user_V *)buf;
    vp = buf;
- 
+
    username_offset = v->username_ofs;
-   username_len    = v->username_len; 
+   username_len    = v->username_len;
    fullname_offset = v->fullname_ofs;
    fullname_len    = v->fullname_len;
    comment_offset  = v->comment_ofs;
@@ -385,7 +385,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
    *fullname = 0;
    *comment = 0;
    *homedir = 0;
-   
+
    if(username_len <= 0 || username_len > vlen ||
       username_offset <= 0 || username_offset >= vlen ||
       comment_len < 0 || comment_len > vlen   ||
@@ -405,12 +405,12 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
    homedir_offset += 0xCC;
    ntpw_offs += 0xCC;
    lmpw_offs += 0xCC;
-   
+
    cheap_uni2ascii(vp + username_offset,username,username_len);
    cheap_uni2ascii(vp + fullname_offset,fullname,fullname_len);
    cheap_uni2ascii(vp + comment_offset,comment,comment_len);
    cheap_uni2ascii(vp + homedir_offset,homedir,homedir_len);
-   
+
 #if 0
    /* Reset hash-lengths to 16 if syskey has been reset */
    if (syskeyreset && ntpw_len > 16 && !stat) {
@@ -429,7 +429,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
    printf("fullname: %s\n",fullname);
    printf("comment : %s\n",comment);
    printf("homedir : %s\n\n",homedir);
-   
+
    sam_list_user_groups(hive[H_SAM], rid,0);
    printf("\n");
 
@@ -455,7 +455,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
 	lmpw_len = 0;
       }
    }
-   
+
    if (gverbose) {
      hexprnt("Crypted NT pw: ",(unsigned char *)(vp+ntpw_offs),16);
      hexprnt("Crypted LM pw: ",(unsigned char *)(vp+lmpw_offs),16);
@@ -467,7 +467,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
    DES_set_key((DES_cblock *)deskey1,&ks1);
    sid_to_key2(rid,(unsigned char *)deskey2);
    DES_set_key((DES_cblock *)deskey2,&ks2);
-   
+
    /* Decrypt the NT md4 password hash as two 8 byte blocks. */
    DES_ecb_encrypt((DES_cblock *)(vp+ntpw_offs ),
 		   (DES_cblock *)md4, &ks1, DES_DECRYPT);
@@ -479,7 +479,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
 		   (DES_cblock *)lanman, &ks1, DES_DECRYPT);
    DES_ecb_encrypt((DES_cblock *)(vp+lmpw_offs + 8),
 		   (DES_cblock *)&lanman[8], &ks2, DES_DECRYPT);
-      
+
    if (gverbose) {
      hexprnt("MD4 hash     : ",(unsigned char *)md4,16);
      hexprnt("LANMAN hash  : ",(unsigned char *)lanman,16);
@@ -489,7 +489,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
 
    printf("\n- - - - User Edit Menu:\n");
    printf(" 1 - Clear (blank) user password\n");
-   printf("%s2 - Unlock and enable user account%s\n", (acb & 0x8000) ? " " : "(", 
+   printf("%s2 - Unlock and enable user account%s\n", (acb & 0x8000) ? " " : "(",
 	  (acb & 0x8000) ? " [probably locked now]" : ") [seems unlocked already]");
    printf(" 3 - Promote user (make user an administrator)\n");
    printf(" 4 - Add user to a group\n");
@@ -541,33 +541,33 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
      }
 
      cheap_ascii2uni(newp,newunipw,pl);
-   
+
      make_lanmpw(newp,newlanpw,pl);
 
      /*   printf("Ucase Lanman: %s\n",newlanpw); */
-   
      MD4Init (&context);
      MD4Update (&context, newunipw, pl<<1);
      MD4Final (digest, &context);
-     
+
+
      if (gverbose) hexprnt("\nNEW MD4 hash    : ",digest,16);
-     
+
      E1((uchar *)newlanpw,   x1, (uchar *)lanman);
      E1((uchar *)newlanpw+7, x1, (uchar *)lanman+8);
-     
+
      if (gverbose) hexprnt("NEW LANMAN hash : ",(unsigned char *)lanman,16);
-     
+
      /* Encrypt the NT md4 password hash as two 8 byte blocks. */
      DES_ecb_encrypt((DES_cblock *)digest,
 		     (DES_cblock *)despw, &ks1, DES_ENCRYPT);
      DES_ecb_encrypt((DES_cblock *)(digest+8),
 		     (DES_cblock *)&despw[8], &ks2, DES_ENCRYPT);
-     
+
      DES_ecb_encrypt((DES_cblock *)lanman,
 		     (DES_cblock *)newlandes, &ks1, DES_ENCRYPT);
      DES_ecb_encrypt((DES_cblock *)(lanman+8),
 		     (DES_cblock *)&newlandes[8], &ks2, DES_ENCRYPT);
-     
+
      if (gverbose) {
        hexprnt("NEW DES crypt   : ",(unsigned char *)despw,16);
        hexprnt("NEW LANMAN crypt: ",(unsigned char *)newlandes,16);
@@ -575,7 +575,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
 
      /* Reset hash length to 16 if syskey enabled, this will cause
       * a conversion to syskey-hashes upon next boot */
-     if (syskeyreset && ntpw_len > 16) { 
+     if (syskeyreset && ntpw_len > 16) {
        ntpw_len = 16;
        lmpw_len = 16;
        ntpw_offs -= 4;
@@ -583,7 +583,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
        *(vp + 0xa0) = 16;
        *(vp + 0xac) = 16;
      }
-     
+
      for (i = 0; i < 16; i++) {
        *(vp+ntpw_offs+i) = (unsigned char)despw[i];
        if (lmpw_len >= 16) *(vp+lmpw_offs+i) = (unsigned char)newlandes[i];
@@ -607,7 +607,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
 
      printf("Password cleared!\n");
    }
-   
+
 #if 0
    hexprnt("Pw in buffer: ",(vp+ntpw_offs),16);
    hexprnt("Lm in buffer: ",(vp+lmpw_offs),16);
@@ -630,7 +630,7 @@ void find_n_change(char *username)
 
   if ((H_SAM < 0) || (!username)) return;
   if (*username == '0' && *(username+1) == 'x') sscanf(username,"%i",&rid);
-  
+
   if (!rid) { /* Look up username */
     /* Extract the unnamed value out of the username-key, value is RID  */
     snprintf(s,180,"\\SAM\\Domains\\Account\\Users\\Names\\%s\\@",username);
@@ -711,7 +711,7 @@ void handle_syskey(void)
   /* struct lsadata *ld = NULL; */
   int /* len, */ i,secboot, samfmode, secmode /* , ldmode */ ;
   struct keyval *samf, *secpol /* , *lsad */ ;
-  char *syskeytypes[4] = { "off", "key-in-registry", "enter-passphrase", "key-on-floppy" }; 
+  char *syskeytypes[4] = { "off", "key-in-registry", "enter-passphrase", "key-on-floppy" };
   char yn[5];
 
   printf("\n---------------------> SYSKEY CHECK <-----------------------\n");
@@ -800,7 +800,7 @@ void handle_syskey(void)
     fmyinput("\nDo you really wish to disable SYSKEY? (y/n) [n] ",yn,2);
     if (*yn == 'y') {
       /* Reset SAM syskey infostruct, fill with zeroes */
-      if (ff) { 
+      if (ff) {
 	ff->syskeymode = 0;
 
 	for (i = 0; i < 0x3b; i++) {
@@ -811,7 +811,7 @@ void handle_syskey(void)
 
       }
       /* Reset SECURITY infostruct (if any) */
-      if (sf) { 
+      if (sf) {
 	memset(sf, 0, secpol->len);
 	sf->syskeymode = 0;
 
@@ -820,7 +820,7 @@ void handle_syskey(void)
       }
 
 #if LSADATA
-      if (ld) { 
+      if (ld) {
 
 	ld->syskeymode = 0;
 
@@ -867,7 +867,7 @@ void useredit(void)
 
   admrid = sam_list_users(hive[H_SAM], 1);
 
-  
+
   printf("\nPlease enter user number (RID) or 0 to exit: [%x] ", admrid);
 
   il = fmyinput("",iwho,32);
@@ -877,12 +877,12 @@ void useredit(void)
     rid = admrid;
   } else {
     sscanf(iwho, "%x", &rid);
-    sprintf(iwho,"0x%x",rid);   
+    sprintf(iwho,"0x%x",rid);
   }
   if (!rid) return;
 
   find_n_change(iwho);
-  
+
 }
 
 
@@ -979,7 +979,7 @@ void interactive(void)
 	   "\n\n");
 
     il = fmyinput("What to do? [1] -> ", inbuf, 10);
-    
+
     if (!il) useredit();
     if (il) {
       switch(inbuf[0]) {
@@ -995,7 +995,7 @@ void interactive(void)
   }
 }
 
-  
+
 void usage(void) {
    printf("chntpw: change password of a user in a Windows SAM file,\n"
 	  "or invoke registry editor. Should handle both 32 and 64 bit windows and\n"
@@ -1012,7 +1012,7 @@ void usage(void) {
 	  " -L          For scripts, write names of changed files to /tmp/changed\n"
 	  " -N          No allocation mode. Only same length overwrites possible (very safe mode)\n"
 	  " -E          No expand mode, do not expand hive file (safe mode)\n"
-	  
+
 	  "\nUsernames can be given as name or RID (in hex with 0x first)\n"
           "\nSee readme file on how to get to the registry files, and what they are.\n"
           "Source/binary freely distributable under GPL v2 license. See README for details.\n"
@@ -1023,7 +1023,7 @@ void usage(void) {
 
 int main(int argc, char **argv)
 {
-  
+
   int dodebug = 0, list = 0, inter = 0,edit = 0,il,d = 0, dd = 0, logchange = 0;
   int mode = HMODE_INFO;
   extern int /* opterr, */ optind;
@@ -1032,9 +1032,9 @@ int main(int argc, char **argv)
   char *who = "Administrator";
   char iwho[100];
   FILE *ch;     /* Write out names of touched files to this */
-   
+
   char *options = "LENidehflvu:";
-  
+
   while((c=getopt(argc,argv,options)) > 0) {
     switch(c) {
     case 'd': dodebug = 1; break;
@@ -1072,8 +1072,8 @@ int main(int argc, char **argv)
     no_hives++;
     filename = argv[optind+no_hives];
   } while (filename && *filename && no_hives < MAX_HIVES);
-  
-  
+
+
   if (dodebug) {
     debugit(hive[0]->buffer,hive[0]->size);
   } else {
@@ -1088,7 +1088,7 @@ int main(int argc, char **argv)
       find_n_change(who);
     }
   }
-  
+
 
   if (list != 1) {
     printf("\nHives that have changed:\n #  Name\n");
@@ -1097,7 +1097,7 @@ int main(int argc, char **argv)
 	if (!logchange) printf("%2d  <%s>",il,hive[il]->filename);
 	if (hive[il]->state & HMODE_DIDEXPAND) printf(" WARNING: File was expanded! Expermental! Use at own risk!\n");
 	printf("\n");
-	
+
 	d = 1;
       }
     }

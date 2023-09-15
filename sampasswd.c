@@ -1,6 +1,6 @@
 /*
  * sampasswd.c - SAM database, add or remove user in a group
- * 
+ *
  * Command line utility, non-interactive to reset user password and/or
  * account bits for a user in the SAM database
  *
@@ -23,7 +23,7 @@
  * GNU General Public License for more details.
  *
  * See file GPL.txt for the full license.
- * 
+ *
  *****
  */
 
@@ -83,11 +83,11 @@ int do_reset(char *user, int inrid, int verb)
   if (!resolvedname) return(1);  /* RID lookup failed, no such user */
 
   if (gverbose) printf("do_reset: Username: %s, RID = %d (0x%0x)\n",resolvedname,rid,rid);
-  
+
   ret = sam_reset_pw(hive[H_SAM], rid);
 
   if (!ret && verb) printf("Password reset for user %s, RID = %d [0x%0x]\n",resolvedname,rid,rid);
- 
+
   FREE(resolvedname);
   return(ret);
 
@@ -126,7 +126,7 @@ void usage(void)
 
 int main(int argc, char **argv)
 {
-   
+
   extern int optind;
   extern char* optarg;
 
@@ -144,7 +144,7 @@ int main(int argc, char **argv)
   char *usr = NULL;
 
   char *options = "rlHu:vNEthaf";
-  
+
   while((c=getopt(argc,argv,options)) > 0) {
     switch(c) {
     case 'r': reset = 1; break;
@@ -221,7 +221,7 @@ int main(int argc, char **argv)
     if (all) {
       ret = sam_reset_all_pw(hive[H_SAM], human);
       if (ret) {
-	fprintf(stderr,"%s: ERROR: Failed reset password of ALL users\n",argv[0]); 
+	fprintf(stderr,"%s: ERROR: Failed reset password of ALL users\n",argv[0]);
       }
     } else if (first) {
       adm = sam_list_users(hive[H_SAM], 2);
@@ -234,7 +234,7 @@ int main(int argc, char **argv)
     } else {
       ret = do_reset(usr, 0, human);
       if (ret) {
-	fprintf(stderr,"%s: ERROR: Failed reset password for %s\n",argv[0],usr); 
+	fprintf(stderr,"%s: ERROR: Failed reset password for %s\n",argv[0],usr);
       }
     }
   }
@@ -245,7 +245,7 @@ int main(int argc, char **argv)
   for (il = 0; il < no_hives; il++) {
     //    wret |= writeHive(hive[il]);
     if (hive[il]->state & HMODE_DIDEXPAND)
-      fprintf(stderr," WARNING: Registry file %s was expanded! Experimental! Use at own risk!\n",hive[il]->filename);  
+      fprintf(stderr," WARNING: Registry file %s was expanded! Experimental! Use at own risk!\n",hive[il]->filename);
     while (no_hives > 0)
       closeHive(hive[--no_hives]);
   }

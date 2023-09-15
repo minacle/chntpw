@@ -1,9 +1,9 @@
 /*
  * edlib.c - Registry edit interactive fuctions.
- * 
+ *
  * Point of this is so that interactive registry editor
  * can be accessed from several other programs
- * 
+ *
  * 2013-aug: Some minor bugfixes and adjustments
  *           Thanks to David Collett for catching and fixing bug in REG_MULTI_SZ editing.
  * 2010-jun: New function from  Aleksander Wojdyga: dpi, decode product ID
@@ -37,7 +37,7 @@
  * GNU General Public License for more details.
  *
  * See file GPL.txt for the full license.
- * 
+ *
  *****
  */
 
@@ -154,7 +154,7 @@ void cat_dpi(struct hive *hdesc, int nkofs, char *path)
 	 (type < REG_MAX ? val_types[type] : "(unknown)"), len, len);
 
 
-  char digits[] = {'B','C','D','F','G','H','J','K','M','P','Q','R','T','V','W','X','Y','2','3','4','6','7','8','9'}; 
+  char digits[] = {'B','C','D','F','G','H','J','K','M','P','Q','R','T','V','W','X','Y','2','3','4','6','7','8','9'};
 
 #define RESULT_LEN 26
   char result[RESULT_LEN];
@@ -186,7 +186,7 @@ void cat_dpi(struct hive *hdesc, int nkofs, char *path)
  * Does not handle all types yet (does a hexdump instead)
  */
 void cat_vk(struct hive *hdesc, int nkofs, char *path, int dohex)
-{     
+{
   void *data;
   int len,i,type;
   //  char string[SZ_MAX+1];
@@ -345,14 +345,14 @@ void edit_val(struct hive *h, int nkofs, char *path)
 	strcpy(newstring+in, origstring+i);
 	in += strlen(origstring+i)+1;
 
-	if (!strcmp("--q", inbuf)) { 
+	if (!strcmp("--q", inbuf)) {
 	  go = 1; done = 1;
 	  if (!(i < (len>>1)-1 )) {
 	    in--;  /* remove last empty if in NEW-mode */
 	  }
 	}
       }
-      
+
       if (!insert) i += strlen(origstring+i) + 1;
       if (insert != 1) n++;
       if (insert == 2) insert = 0;
@@ -496,7 +496,7 @@ void regedit_interactive(struct hive *hive[], int no_hives)
     l = fmyinput("",inbuf,90);
     bp = inbuf;
     skipspace(&bp);
-      
+
     if (l > 0 && *bp) {
       switch(parsecmd(&bp,maincmds)) {
       case MCMD_HELP:
@@ -620,7 +620,7 @@ void regedit_interactive(struct hive *hive[], int no_hives)
 	  for (nh = 0; nh < no_hives; nh++) {
 	    printf("%c %c %2d %9d 0x%08x <%s>\n", (nh == usehive) ? '*' : ' ',
 		   (hive[nh]->state & HMODE_DIRTY) ? 'D' : ' ',
-		   nh, 
+		   nh,
 		   hive[nh]->size,
 		   hive[nh]->size, hive[nh]->filename);
 	  }
