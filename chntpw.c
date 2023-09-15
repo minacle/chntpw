@@ -41,7 +41,7 @@
  *
  *****
  *
- * Copyright (c) 2021 Mina Her.
+ * Copyright (c) 2021-2023 Mina Her.
  * Copyright (c) 1997-2014 Petter Nordahl-Hagen.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -88,7 +88,7 @@
 #include "ntreg.h"
 #include "sam.h"
 
-const char chntpw_version[] = "chntpw version 1.0.1, (c) 2021 Mina Her, 1997-2014 Petter N Hagen";
+const char chntpw_version[] = "chntpw version 1.0.2, (c) 2021-2023 Mina Her, 1997-2014 Petter N Hagen";
 
 extern char *val_types[REG_MAX+1];
 

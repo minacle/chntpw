@@ -18,6 +18,7 @@
  *
  *****
  *
+ * Copyright (c) 2021-2023 Mina Her.
  * Copyright (c) 1997-2013 Petter Nordahl-Hagen.
  *
  * This program is free software; you can redistribute it and/or modify

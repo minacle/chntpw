@@ -55,6 +55,7 @@
  *****
  *
  * NTREG - Window registry file reader / writer library
+ * Copyright (c) 2021-2023 Mina Her.
  * Copyright (c) 1997-2014 Petter Nordahl-Hagen.
  *
  * This library is free software; you can redistribute it and/or
@@ -90,7 +91,7 @@
 #define ZEROFILL      1  /* Fill blocks with zeroes when allocating and deallocating */
 #define ZEROFILLONLOAD  0  /* Fill blocks marked as unused/deallocated with zeroes on load. FOR DEBUG */
 
-const char ntreg_version[] = "ntreg lib routines, v0.95 140201, (c) Petter N Hagen";
+const char ntreg_version[] = "ntreg lib routines, v1.0.2, (c) 2021-2023 Mina Her, 1997-2014 Petter N Hagen";
 
 const char *val_types[REG_MAX+1] = {
   "REG_NONE", "REG_SZ", "REG_EXPAND_SZ", "REG_BINARY", "REG_DWORD",       /* 0 - 4 */
