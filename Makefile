@@ -11,7 +11,7 @@ OSSLINC=$(OSSLPATH)/include
 
 CC=clang
 
-CFLAGS= -DDOCRYPTO -g -I. -I$(OSSLINC) -Wall
+CFLAGS= -DDOCRYPTO -g -I. -I$(OSSLINC) -Wall -std=c99
 OSSLLIB=$(OSSLPATH)/lib
 
 
