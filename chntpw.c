@@ -85,11 +85,6 @@
 #include <openssl/md4.h>
 #endif
 
-#define uchar u_char
-#define MD4Init MD4_Init
-#define MD4Update MD4_Update
-#define MD4Final MD4_Final
-
 #include "ntreg.h"
 #include "sam.h"
 
@@ -200,12 +195,12 @@ void sid_to_key2(uint32_t sid,unsigned char deskey[8])
 
 /* DES encrypt, for LANMAN */
 
-void E1(uchar *k, uchar *d, uchar *out)
+void E1(unsigned char *k, unsigned char *d, unsigned char *out)
 {
   DES_key_schedule ks;
   DES_cblock deskey;
 
-  str_to_key(k,(uchar *)deskey);
+  str_to_key(k,(unsigned char *)deskey);
 #ifdef __FreeBSD__
   DES_set_key(&deskey,&ks);
 #else /* __FreeBsd__ */
@@ -349,7 +344,7 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
    DES_cblock deskey1, deskey2;
    MD4_CTX context;
    unsigned char digest[16];
-   uchar x1[] = {0x4B,0x47,0x53,0x21,0x40,0x23,0x24,0x25};
+   unsigned char x1[] = {0x4B,0x47,0x53,0x21,0x40,0x23,0x24,0x25};
 #endif
 
 
@@ -545,15 +540,15 @@ char *change_pw(char *buf, int rid, int vlen, int stat)
      make_lanmpw(newp,newlanpw,pl);
 
      /*   printf("Ucase Lanman: %s\n",newlanpw); */
-     MD4Init (&context);
-     MD4Update (&context, newunipw, pl<<1);
-     MD4Final (digest, &context);
 
+     MD4_Init (&context);
+     MD4_Update (&context, newunipw, pl<<1);
+     MD4_Final (digest, &context);
 
      if (gverbose) hexprnt("\nNEW MD4 hash    : ",digest,16);
 
-     E1((uchar *)newlanpw,   x1, (uchar *)lanman);
-     E1((uchar *)newlanpw+7, x1, (uchar *)lanman+8);
+     E1((unsigned char *)newlanpw,   x1, (unsigned char *)lanman);
+     E1((unsigned char *)newlanpw+7, x1, (unsigned char *)lanman+8);
 
      if (gverbose) hexprnt("NEW LANMAN hash : ",(unsigned char *)lanman,16);
 
