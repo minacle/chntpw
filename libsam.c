@@ -44,6 +44,7 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 #include "ntreg.h"
 #include "sam.h"
