@@ -105,12 +105,12 @@ int cmd_usrgrp(char *user, char *grp, int what, int human)
 
 
   if (human) printf("%s user <%s> with RID = %d (0x%0x) %s group <%s> with GID = %d (0x%x)\n",
-		    (what == 1 ? "Add" : "Remove"),
-		    resolveduser,
-		    rid, rid,
-		    (what == 1 ? "to" : "from"),
-		    resolvedgroup,
-		    numgrp, numgrp );
+                    (what == 1 ? "Add" : "Remove"),
+                    resolveduser,
+                    rid, rid,
+                    (what == 1 ? "to" : "from"),
+                    resolvedgroup,
+                    numgrp, numgrp );
 
   FREE(resolveduser);
   FREE(resolvedgroup);
@@ -130,34 +130,34 @@ int cmd_usrgrp(char *user, char *grp, int what, int human)
 void usage(void)
 {
   printf(" [-a|-r] -u <user> -g <groupid> <samhive>\n"
-	 "Add or remove a (local) user to/from a group\n"
+         "Add or remove a (local) user to/from a group\n"
          "Mode:"
-	 "   -a = add user to group\n"
+         "   -a = add user to group\n"
          "   -r = remove user from group\n"
-	 "   -l = list groups\n"
-	 "   -L = list groups and also their members\n"
-	 "   -s = Print machine SID\n"
+         "   -l = list groups\n"
+         "   -L = list groups and also their members\n"
+         "   -s = Print machine SID\n"
          "Parameters:\n"
          "   <user> can be given as a username or a RID in hex with 0x in front\n"
-	 "   <group> is the group number, in hex with 0x in front\n"
+         "   <group> is the group number, in hex with 0x in front\n"
          "   Example:\n"
          "   -a -u theboss -g 0x220 -> add user named 'theboss' group hex 220 (administrators)\n"
          "   -a -u 0x3ea -g 0x221 -> add user with RID (hex) 3ea group hex 221 (users)\n"
          "   -r -u 0x3ff -g 0x220 -> remove user RID 0x3ff from grp 0x220\n"
          "   Usernames with international characters usually fails to be found,\n"
          "   please use RID number instead\n"
-	 "   If success, there will be no output, and exit code is 0\n"
+         "   If success, there will be no output, and exit code is 0\n"
          "   Also, success if user already in (or not in if -r) the group\n"
-	 "Options:\n"
-	 "   -H : Human readable output, else parsable\n"
-	 "   -N : No allocate mode, only allow edit of existing values with same size\n"
-	 "   -E : No expand mode, do not expand hive file (safe mode)\n"
-	 "   -t : Debug trace of allocated blocks\n"
-	 "   -v : Some more verbose messages/debug\n"
+         "Options:\n"
+         "   -H : Human readable output, else parsable\n"
+         "   -N : No allocate mode, only allow edit of existing values with same size\n"
+         "   -E : No expand mode, do not expand hive file (safe mode)\n"
+         "   -t : Debug trace of allocated blocks\n"
+         "   -v : Some more verbose messages/debug\n"
          "Multi call binary, if program is named:\n"
          "  samusrtogrp -- Assume -a mode: Add a user into a group\n"
-	 "  samusrfromgrp -- Assume -r mode: Remove user from a group\n"
-	 );
+         "  samusrfromgrp -- Assume -r mode: Remove user from a group\n"
+         );
 }
 
 
@@ -240,7 +240,7 @@ int main(int argc, char **argv)
   }
   do {
     if (!(hive[no_hives] = openHive(hivename,
-				    HMODE_RW|mode))) {
+                                    HMODE_RW|mode))) {
       fprintf(stderr,"%s: ERROR: Unable to open/read registry hive, cannot continue\n",argv[0]);
       exit(1);
     }
@@ -256,7 +256,7 @@ int main(int argc, char **argv)
 
   if (H_SAM == -1) {
     fprintf(stderr,"%s: WARNING: Registry hive does not look like SAM!\n"
-	    "%s: WARNING: Continuing anyway, may lead to strange messages/failures!\n",argv[0],argv[0]);
+            "%s: WARNING: Continuing anyway, may lead to strange messages/failures!\n",argv[0],argv[0]);
     H_SAM = 0;
   }
 

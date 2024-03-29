@@ -204,7 +204,7 @@ struct user_V {
   int unknowna_7;      /* 0xc8 - zero ? */
 
   char data[4];        /* Data starts here. All pointers above is relative to this,
-			  that is V + 0xCC */
+                          that is V + 0xCC */
 
 };
 

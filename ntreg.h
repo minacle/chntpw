@@ -70,19 +70,19 @@
 
 struct regf_header {
 
-  int32_t id;            /* 0x00000000	D-Word	ID: ASCII-"regf" = 0x66676572 */
-  int32_t unknown1;      /* 0x00000004	D-Word	???? Mount count */
-  int32_t unknown2;      /* 0x00000008	D-Word	???? Always the same value as at 0x00000004  */
-  char timestamp[8];     /* 0x0000000C	Q-Word	last modify date in WinNT date-format */
-  int32_t unknown3;      /* 0x00000014	D-Word	1 */
-  int32_t unknown4;      /* 0x00000018	D-Word	3 - probably version #. 2 in NT3.51 */
-  int32_t unknown5;      /* 0x0000001C	D-Word	0 */
-  int32_t unknown6;      /* 0x00000020	D-Word	1 */
-  int32_t ofs_rootkey;   /* 0x00000024	D-Word	Offset of 1st key record */
-  int32_t filesize;      /* 0x00000028	D-Word	Offset of first non-used data at end of file */
-  int32_t unknown7;      /* 0x0000002C	D-Word	1 */
+  int32_t id;            /* 0x00000000  D-Word  ID: ASCII-"regf" = 0x66676572 */
+  int32_t unknown1;      /* 0x00000004  D-Word  ???? Mount count */
+  int32_t unknown2;      /* 0x00000008  D-Word  ???? Always the same value as at 0x00000004  */
+  char timestamp[8];     /* 0x0000000C  Q-Word  last modify date in WinNT date-format */
+  int32_t unknown3;      /* 0x00000014  D-Word  1 */
+  int32_t unknown4;      /* 0x00000018  D-Word  3 - probably version #. 2 in NT3.51 */
+  int32_t unknown5;      /* 0x0000001C  D-Word  0 */
+  int32_t unknown6;      /* 0x00000020  D-Word  1 */
+  int32_t ofs_rootkey;   /* 0x00000024  D-Word  Offset of 1st key record */
+  int32_t filesize;      /* 0x00000028  D-Word  Offset of first non-used data at end of file */
+  int32_t unknown7;      /* 0x0000002C  D-Word  1 */
   char name[0x1fc-0x30]; /* 0x00000030  Seems like the hive's name is buried here, max len unknown */
-  int32_t checksum;      /* 0x000001FC	D-Word	Xor sum of all D-Words from 0x00000000 to 0x000001FB */
+  int32_t checksum;      /* 0x000001FC  D-Word  Xor sum of all D-Words from 0x00000000 to 0x000001FB */
 };
 
 /* The page header, I don't know if the 14 "dummy" bytes has a meaning,
@@ -91,11 +91,11 @@ struct regf_header {
 
 struct  hbin_page {
 
-  int32_t id;          /* 0x0000	D-Word	ID: ASCII-"hbin" = 0x6E696268  */
-  int32_t ofs_self;    /* 0x0004	D-Word	Offset to itself, could be for sanity check */
-  int32_t ofs_next;    /* 0x0008	D-Word	Relative offset to next hbin (practically length of this one)  */
+  int32_t id;          /* 0x0000        D-Word  ID: ASCII-"hbin" = 0x6E696268  */
+  int32_t ofs_self;    /* 0x0004        D-Word  Offset to itself, could be for sanity check */
+  int32_t ofs_next;    /* 0x0008        D-Word  Relative offset to next hbin (practically length of this one)  */
   char dummy1[14];     /*               0x14 to 0x001b may be timestamp in some windows versions, at least in first hbin */
-  int32_t len_page;    /* 0x001C	D-Word	Block-size??? Don't look like it. Most often zero. */
+  int32_t len_page;    /* 0x001C        D-Word  Block-size??? Don't look like it. Most often zero. */
 
   int32_t firstlink;   /* 0x0020  First data block likage */
   /*  char data[1];      0x0020   First data block starts here           */
@@ -122,12 +122,12 @@ struct  hbin_page {
 */
 struct sk_key {
 
-  short id;          /* 0x0000	Word	ID: ASCII-"sk" = 0x6B73        */
-  short dummy1;      /* 0x0002	Word	Unused                         */
-  int32_t  ofs_prevsk;  /* 0x0004	D-Word	Offset of previous "sk"-Record */
-  int32_t  ofs_nextsk;  /* 0x0008	D-Word	Offset of next "sk"-Record     */
-  int32_t  no_usage;    /* 0x000C	D-Word	usage-counter                  */
-  int32_t  len_sk;      /* 0x0010	D-Word	Size of "sk"-record in bytes   */
+  short id;          /* 0x0000  Word    ID: ASCII-"sk" = 0x6B73        */
+  short dummy1;      /* 0x0002  Word    Unused                         */
+  int32_t  ofs_prevsk;  /* 0x0004       D-Word  Offset of previous "sk"-Record */
+  int32_t  ofs_nextsk;  /* 0x0008       D-Word  Offset of next "sk"-Record     */
+  int32_t  no_usage;    /* 0x000C       D-Word  usage-counter                  */
+  int32_t  len_sk;      /* 0x0010       D-Word  Size of "sk"-record in bytes   */
   char  data[4];     /* Security data up to len_sk bytes               */
 
 };
@@ -141,23 +141,23 @@ struct sk_key {
 
 struct lf_key {
 
-  short id;         /* 0x0000	Word	ID: ASCII-"lf" = 0x666C or "lh" = 0x686c */
-  short no_keys;    /* 0x0002	Word	number of keys          */
-                    /* 0x0004	????	Hash-Records            */
+  short id;         /* 0x0000   Word    ID: ASCII-"lf" = 0x666C or "lh" = 0x686c */
+  short no_keys;    /* 0x0002   Word    number of keys          */
+                    /* 0x0004   ????    Hash-Records            */
 
  union {
 
     struct lf_hash {
-      int32_t ofs_nk;    /* 0x0000	D-Word	Offset of corresponding "nk"-Record  */
-      char name[4];   /* 0x0004	D-Word	ASCII: the first 4 characters of the key-name,  */
+      int32_t ofs_nk;    /* 0x0000  D-Word  Offset of corresponding "nk"-Record  */
+      char name[4];   /* 0x0004     D-Word  ASCII: the first 4 characters of the key-name,  */
     } hash[1];
 
       /* WinXP uses a more real hash instead (base 37 of uppercase name chars)  */
-      /* 		padded with 0's. Case sensitiv!                         */
+      /*                padded with 0's. Case sensitiv!                         */
 
     struct lh_hash {
-      int32_t ofs_nk;    /* 0x0000	D-Word	Offset of corresponding "nk"-Record  */
-      int32_t hash;      /* 0x0004	D-Word	ASCII: the first 4 characters of the key-name,  */
+      int32_t ofs_nk;    /* 0x0000      D-Word  Offset of corresponding "nk"-Record  */
+      int32_t hash;      /* 0x0004      D-Word  ASCII: the first 4 characters of the key-name,  */
     } lh_hash[1];
   };
 
@@ -168,11 +168,11 @@ struct lf_key {
  */
 struct li_key {
 
-  short id;         /* 0x0000	Word	ID: ASCII-"li" = 0x696C */
-  short no_keys;    /* 0x0002	Word	number of keys          */
-                    /* 0x0004	????	Hash-Records            */
+  short id;         /* 0x0000   Word    ID: ASCII-"li" = 0x696C */
+  short no_keys;    /* 0x0002   Word    number of keys          */
+                    /* 0x0004   ????    Hash-Records            */
   struct li_hash {
-    int32_t ofs_nk;    /* 0x0000	D-Word	Offset of corresponding "nk"-Record  */
+    int32_t ofs_nk;    /* 0x0000        D-Word  Offset of corresponding "nk"-Record  */
   } hash[1];
 };
 
@@ -182,10 +182,10 @@ struct li_key {
  */
 struct db_key {
 
-  short id;         /* 0x0000	Word	ID: ASCII-"li" = 0x6462 */
-  short no_part;    /* 0x0002	Word	number of data parts    */
-                    /* 0x0004	????	Pointers to data        */
-  int32_t ofs_data;    /* 0x0000	D-Word	Offset to list of data blocks  */
+  short id;         /* 0x0000   Word    ID: ASCII-"li" = 0x6462 */
+  short no_part;    /* 0x0002   Word    number of data parts    */
+                    /* 0x0004   ????    Pointers to data        */
+  int32_t ofs_data;    /* 0x0000        D-Word  Offset to list of data blocks  */
   /* Something else seems to follow here, 4 bytes at least */
   /* and why not list the data block in here ???? why make another list?? */
 };
@@ -204,11 +204,11 @@ struct db_key {
  */
 struct ri_key {
 
-  short id;         /* 0x0000	Word	ID: ASCII-"ri" = 0x6972 */
-  short no_lis;    /* 0x0002	Word	number of pointers to li */
-                    /* 0x0004	????	Hash-Records            */
+  short id;         /* 0x0000   Word    ID: ASCII-"ri" = 0x6972 */
+  short no_lis;    /* 0x0002    Word    number of pointers to li */
+                    /* 0x0004   ????    Hash-Records            */
   struct ri_hash {
-      int32_t ofs_li;    /* 0x0000	D-Word	Offset of corresponding "li"-Record  */
+      int32_t ofs_li;    /* 0x0000      D-Word  Offset of corresponding "li"-Record  */
   } hash[1];
 };
 
@@ -223,16 +223,16 @@ struct ri_key {
  */
 struct vk_key {
 
-                    /* Offset	Size	Contents                 */
-  short id;         /* 0x0000	Word	ID: ASCII-"vk" = 0x6B76  */
-  short len_name;   /* 0x0002	Word	name length              */
-  int32_t  len_data;   /* 0x0004	D-Word	length of the data       */
-  int32_t  ofs_data;   /* 0x0008	D-Word	Offset of Data           */
-  int32_t  val_type;   /* 0x000C	D-Word	Type of value            */
-  short flag;       /* 0x0010	Word	Flag
+                    /* Offset   Size    Contents                 */
+  short id;         /* 0x0000   Word    ID: ASCII-"vk" = 0x6B76  */
+  short len_name;   /* 0x0002   Word    name length              */
+  int32_t  len_data;   /* 0x0004        D-Word  length of the data       */
+  int32_t  ofs_data;   /* 0x0008        D-Word  Offset of Data           */
+  int32_t  val_type;   /* 0x000C        D-Word  Type of value            */
+  short flag;       /* 0x0010   Word    Flag
                                 0x1 ANSI encoding                */
-  short dummy1;     /* 0x0012	Word	Unused (data-trash)      */
-  char  keyname[1]; /* 0x0014	????	Name                     */
+  short dummy1;     /* 0x0012   Word    Unused (data-trash)      */
+  char  keyname[1]; /* 0x0014   ????    Name                     */
 
 };
 
@@ -245,29 +245,29 @@ struct vk_key {
  */
 struct nk_key {
 
-                        /* Offset	Size	Contents */
-  short id;             /*  0x0000	Word	ID: ASCII-"nk" = 0x6B6E                */
-  short type;           /*  0x0002	Word	for the root-key: 0x2C, otherwise 0x20 */
-			/*              0x20 seems a flag for ANSI encoding            */
+                        /* Offset       Size    Contents */
+  short id;             /*  0x0000      Word    ID: ASCII-"nk" = 0x6B6E                */
+  short type;           /*  0x0002      Word    for the root-key: 0x2C, otherwise 0x20 */
+                        /*              0x20 seems a flag for ANSI encoding            */
                         /*            0x1000 is used in some places in Vista and newer */
-  char  timestamp[12];  /*  0x0004	Q-Word	write-date/time in windows nt notation */
-  int32_t  ofs_parent;     /*  0x0010	D-Word	Offset of Owner/Parent key             */
-  int32_t  no_subkeys;     /*  0x0014	D-Word	number of sub-Keys                     */
+  char  timestamp[12];  /*  0x0004      Q-Word  write-date/time in windows nt notation */
+  int32_t  ofs_parent;     /*  0x0010   D-Word  Offset of Owner/Parent key             */
+  int32_t  no_subkeys;     /*  0x0014   D-Word  number of sub-Keys                     */
   int32_t  dummy1;
-  int32_t  ofs_lf;         /*  0x001C	D-Word	Offset of the sub-key lf-Records       */
+  int32_t  ofs_lf;         /*  0x001C   D-Word  Offset of the sub-key lf-Records       */
   int32_t  dummy2;
-  int32_t  no_values;      /*  0x0024	D-Word	number of values                       */
-  int32_t  ofs_vallist;    /*  0x0028	D-Word	Offset of the Value-List               */
-  int32_t  ofs_sk;         /*  0x002C	D-Word	Offset of the sk-Record                */
-  int32_t  ofs_classnam;   /*  0x0030	D-Word	Offset of the Class-Name               */
+  int32_t  no_values;      /*  0x0024   D-Word  number of values                       */
+  int32_t  ofs_vallist;    /*  0x0028   D-Word  Offset of the Value-List               */
+  int32_t  ofs_sk;         /*  0x002C   D-Word  Offset of the sk-Record                */
+  int32_t  ofs_classnam;   /*  0x0030   D-Word  Offset of the Class-Name               */
   int32_t  dummy3;         /*  0x0034   unknown   some of these may be used by vista   */
   int32_t  dummy4;         /*  0x0038   unknown   and newer ??                         */
   int32_t  dummy5;         /*  0x003c   unknown                                        */
   int32_t  dummy6;         /*  0x0040   unknown                                        */
-  int32_t  dummy7;         /*  0x0044	unknown                                        */
-  short len_name;       /*  0x0048	Word	name-length                            */
-  short len_classnam;   /*  0x004A	Word	class-name length                      */
-  char  keyname[1];     /*  0x004C	????	key-name                               */
+  int32_t  dummy7;         /*  0x0044   unknown                                        */
+  short len_name;       /*  0x0048      Word    name-length                            */
+  short len_classnam;   /*  0x004A      Word    class-name length                      */
+  char  keyname[1];     /*  0x004C      ????    key-name                               */
 };
 
 /*********************************************************************************/
@@ -339,7 +339,7 @@ struct hive {
   int  filedesc;         /* File descriptor (only valid if state == OPEN) */
   int  state;            /* Current state of hive */
   int  type;             /* Suggested type of hive. NOTE: Library will guess when
-			    it loads it, but application may change it if needed */
+                            it loads it, but application may change it if needed */
   int  pages;            /* Number of pages, total */
   int  useblk;           /* Total # of used blocks */
   int  unuseblk;         /* Total # of unused blocks */
@@ -415,10 +415,10 @@ int set_val_type(struct hive *hdesc, int vofs, char *path, int exact, int type);
 int get_val_len(struct hive *hdesc, int vofs, char *path, int exact);
 void *get_val_data(struct hive *hdesc, int vofs, char *path, int val_type, int exact);
 struct keyval *get_val2buf(struct hive *hdesc, struct keyval *kv,
-			   int vofs, char *path, int type, int exact );
+                           int vofs, char *path, int type, int exact );
 int get_dword(struct hive *hdesc, int vofs, char *path, int exact);
 int put_buf2val(struct hive *hdesc, struct keyval *kv,
-		int vofs, char *path, int type, int exact );
+                int vofs, char *path, int type, int exact );
 int put_dword(struct hive *hdesc, int vofs, char *path, int exact, int dword);
 void export_key(struct hive *hdesc, int nkofs, char *name, char *filename, char *prefix);
 void closeHive(struct hive *hdesc);

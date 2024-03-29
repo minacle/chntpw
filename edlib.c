@@ -153,7 +153,7 @@ void cat_dpi(struct hive *hdesc, int nkofs, char *path)
   }
 
   printf("Value <%s> of type %s, data length %d [0x%x]\n", path,
-	 (type < REG_MAX ? val_types[type] : "(unknown)"), len, len);
+         (type < REG_MAX ? val_types[type] : "(unknown)"), len, len);
 
 
   char digits[] = {'B','C','D','F','G','H','J','K','M','P','Q','R','T','V','W','X','Y','2','3','4','6','7','8','9'};
@@ -226,7 +226,7 @@ void cat_vk(struct hive *hdesc, int nkofs, char *path, int dohex)
 
 
   printf("Value <%s> of type %s (%x), data length %d [0x%x]\n", path,
-	 (type < REG_MAX ? val_types[type] : "(unknown)"), type, len, len);
+         (type < REG_MAX ? val_types[type] : "(unknown)"), type, len, len);
 
   if (dohex) type = REG_BINARY;
   switch (type) {
@@ -282,14 +282,14 @@ void edit_val(struct hive *h, int nkofs, char *path)
   len = kv->len;
 
   printf("EDIT: <%s> of type %s (%x) with length %d [0x%x]\n", path,
-	 (type < REG_MAX ? val_types[type] : "(unknown)"), type,
-	 len, len);
+         (type < REG_MAX ? val_types[type] : "(unknown)"), type,
+         len, len);
 
   switch(type) {
   case REG_DWORD:
     printf("DWORD: Old value %d [0x%x], ", kv->data, kv->data);
     fmyinput("enter new value (prepend 0x if hex, empty to keep old value)\n-> ",
-	     inbuf, 12);
+             inbuf, 12);
     if (*inbuf) {
       sscanf(inbuf,"%i",&kv->data);
       d = 1;
@@ -329,38 +329,38 @@ void edit_val(struct hive *h, int nkofs, char *path)
       if (!go) fmyinput("-> ",inbuf, 500);
       else *inbuf = 0;
       if (*inbuf && strcmp("--q", inbuf)) {
-	if (!strcmp("--n", inbuf) || !strcmp("--Q", inbuf)) { /* Zap rest */
-	  i = (len>>1) ; done = 1;
-	} else if (strcmp("--i", inbuf)) {  /* Copy out given string */
-	  if (!strcmp("--e",inbuf)) *inbuf = '\0';
-	  if (newstring) newstring = realloc(newstring, in+strlen(inbuf)+1);
-	  else newstring = malloc(in+strlen(inbuf)+1);
-	  strcpy(newstring+in, inbuf);
-	  in += strlen(inbuf)+1;
-	} else {
-	  insert = 1;
-	}
+        if (!strcmp("--n", inbuf) || !strcmp("--Q", inbuf)) { /* Zap rest */
+          i = (len>>1) ; done = 1;
+        } else if (strcmp("--i", inbuf)) {  /* Copy out given string */
+          if (!strcmp("--e",inbuf)) *inbuf = '\0';
+          if (newstring) newstring = realloc(newstring, in+strlen(inbuf)+1);
+          else newstring = malloc(in+strlen(inbuf)+1);
+          strcpy(newstring+in, inbuf);
+          in += strlen(inbuf)+1;
+        } else {
+          insert = 1;
+        }
       } else {  /* Copy out default string */
 
-	if (newstring) newstring = realloc(newstring, in+strlen(origstring+i)+1);
-	else newstring = malloc(in + strlen(origstring+i) + 1);
-	strcpy(newstring+in, origstring+i);
-	in += strlen(origstring+i)+1;
+        if (newstring) newstring = realloc(newstring, in+strlen(origstring+i)+1);
+        else newstring = malloc(in + strlen(origstring+i) + 1);
+        strcpy(newstring+in, origstring+i);
+        in += strlen(origstring+i)+1;
 
-	if (!strcmp("--q", inbuf)) {
-	  go = 1; done = 1;
-	  if (!(i < (len>>1)-1 )) {
-	    in--;  /* remove last empty if in NEW-mode */
-	  }
-	}
+        if (!strcmp("--q", inbuf)) {
+          go = 1; done = 1;
+          if (!(i < (len>>1)-1 )) {
+            in--;  /* remove last empty if in NEW-mode */
+          }
+        }
       }
 
       if (!insert) i += strlen(origstring+i) + 1;
       if (insert != 1) n++;
       if (insert == 2) insert = 0;
       if (type != REG_MULTI_SZ) {
-	i = (len<<1);
-	done = 1;
+        i = (len<<1);
+        done = 1;
       }
 
     }
@@ -371,8 +371,8 @@ void edit_val(struct hive *h, int nkofs, char *path)
 
 
       if (type == REG_MULTI_SZ) {
-	*(newstring+in) = '\0';  /* Must add null termination */
-	in++;
+        *(newstring+in) = '\0';  /* Must add null termination */
+        in++;
       }
 
       ALLOC(newkv,1,(in<<1)+sizeof(int));
@@ -444,8 +444,8 @@ void nv_help(void)
   int i;
 
   printf("Command syntax is:\n\n"
-	 " nv <type> <valuename>\n\n"
-	 "where <type> should be the HEX NUMBER from one of these registry value types:\n\n");
+         " nv <type> <valuename>\n\n"
+         "where <type> should be the HEX NUMBER from one of these registry value types:\n\n");
 
   for (i=0; i < REG_MAX; i++) {
     printf(" %2x : %s\n",i,val_types[i]);
@@ -502,154 +502,154 @@ void regedit_interactive(struct hive *hive[], int no_hives)
     if (l > 0 && *bp) {
       switch(parsecmd(&bp,maincmds)) {
       case MCMD_HELP:
-	printf("Simple registry editor:\n");
-	printf("hive [<n>]             - list loaded hives or switch to hive numer n\n");
-	printf("cd <key>               - change current key\n");
-	printf("ls | dir [<key>]       - show subkeys & values,\n");
+        printf("Simple registry editor:\n");
+        printf("hive [<n>]             - list loaded hives or switch to hive numer n\n");
+        printf("cd <key>               - change current key\n");
+        printf("ls | dir [<key>]       - show subkeys & values,\n");
         printf("cat | type <value>     - show key value\n");
         printf("dpi <value>            - show decoded DigitalProductId value\n");
         printf("hex <value>            - hexdump of value data\n");
-	printf("ck [<keyname>]         - Show keys class data, if it has any\n");
-	printf("nk <keyname>           - add key\n");
-	printf("dk <keyname>           - delete key (must be empty)\n");
-	printf("ed <value>             - Edit value\n");
-	printf("nv <type#> <valuename> - Add value\n");
-	printf("dv <valuename>         - Delete value\n");
-	printf("delallv                - Delete all values in current key\n");
-	printf("rdel <keyname>         - Recursively delete key & subkeys\n");
-	printf("ek <filename> <prefix> <keyname>  - export key to <filename> (Windows .reg file format)\n");
-	printf("debug                  - enter buffer hexeditor\n");
+        printf("ck [<keyname>]         - Show keys class data, if it has any\n");
+        printf("nk <keyname>           - add key\n");
+        printf("dk <keyname>           - delete key (must be empty)\n");
+        printf("ed <value>             - Edit value\n");
+        printf("nv <type#> <valuename> - Add value\n");
+        printf("dv <valuename>         - Delete value\n");
+        printf("delallv                - Delete all values in current key\n");
+        printf("rdel <keyname>         - Recursively delete key & subkeys\n");
+        printf("ek <filename> <prefix> <keyname>  - export key to <filename> (Windows .reg file format)\n");
+        printf("debug                  - enter buffer hexeditor\n");
         printf("st [<hexaddr>]         - debug function: show struct info\n");
         printf("q                      - quit\n");
         break;
 
       case MCMD_DELKEY :
-	bp++;
-	skipspace(&bp);
+        bp++;
+        skipspace(&bp);
         del_key(hdesc, cdofs + 4, bp);
-	break;
+        break;
       case MCMD_NEWKEY :
-	bp++;
-	skipspace(&bp);
+        bp++;
+        skipspace(&bp);
         add_key(hdesc, cdofs + 4, bp);
-	break;
+        break;
       case MCMD_DELVALL :
-	bp++;
-	skipspace(&bp);
+        bp++;
+        skipspace(&bp);
         del_allvalues(hdesc, cdofs + 4);
-	break;
+        break;
       case MCMD_DELV :
-	bp++;
-	skipspace(&bp);
+        bp++;
+        skipspace(&bp);
         del_value(hdesc, cdofs + 4, bp, 0);
-	break;
+        break;
       case MCMD_ADDV :
-	bp++;
-	skipspace(&bp);
-	if (!isxdigit(*bp)) {
-	  nv_help();
-	  break;
+        bp++;
+        skipspace(&bp);
+        if (!isxdigit(*bp)) {
+          nv_help();
+          break;
         }
-	nh = gethex(&bp);
-	skipspace(&bp);
-	if (!*bp) {
-	  nv_help();
-	  break;
-	}
+        nh = gethex(&bp);
+        skipspace(&bp);
+        if (!*bp) {
+          nv_help();
+          break;
+        }
         add_value(hdesc, cdofs+4, bp, nh);
-	break;
+        break;
 #if ALLOC_DEBUG
       case MCMD_FREE :
-	bp++;
-	skipspace(&bp);
-	nh = gethex(&bp);
+        bp++;
+        skipspace(&bp);
+        nh = gethex(&bp);
         free_block(hdesc, nh);
-	break;
+        break;
       case MCMD_ALLOC :
-	bp++;
-	skipspace(&bp);
-	nh = gethex(&bp);
+        bp++;
+        skipspace(&bp);
+        nh = gethex(&bp);
         alloc_block(hdesc, cdofs+4, nh);
-	break;
+        break;
 #endif
 #if ADDBIN_DEBUG
       case MCMD_ADDBIN :
-	bp++;
-	skipspace(&bp);
-	nh = gethex(&bp);
+        bp++;
+        skipspace(&bp);
+        nh = gethex(&bp);
         add_bin(hdesc, nh);
-	break;
+        break;
 #endif
       case MCMD_LS :
-	bp++;
-	skipspace(&bp);
+        bp++;
+        skipspace(&bp);
         nk_ls(hdesc, bp, cdofs+4, 0);
-	break;
+        break;
       case MCMD_CK :
-	bp++;
-	skipspace(&bp);
+        bp++;
+        skipspace(&bp);
         kv = get_class(hdesc, cdofs+4, bp);
-	if (kv) {
-	  hexdump((char *)&kv->data, 0, kv->len, 1);
-	  FREE(kv);
-	}
-	break;
+        if (kv) {
+          hexdump((char *)&kv->data, 0, kv->len, 1);
+          FREE(kv);
+        }
+        break;
       case MCMD_RDEL :
-	bp++;
-	skipspace(&bp);
+        bp++;
+        skipspace(&bp);
         rdel_keys(hdesc, bp, cdofs+4);
-	break;
+        break;
       case MCMD_EDIT :
-	bp++;
-	skipspace(&bp);
+        bp++;
+        skipspace(&bp);
         edit_val(hdesc, cdofs+4, bp);
-	break;
+        break;
       case MCMD_HIVE :
-	bp++;
-	skipspace(&bp);
-	if (*bp) {
-	  nh = gethex(&bp);
-	  if (nh >= 0 && nh < no_hives) {
-	    usehive = nh;
-	    printf("Switching to hive #%d, named <%s>, size %d [0x%x]\n",
-		   usehive, hive[usehive]->filename,
-		   hive[usehive]->size,
-		   hive[usehive]->size);
-	    hdesc = hive[usehive];
-	    cdofs = hdesc->rootofs;
-	  }
-	} else {
-	  for (nh = 0; nh < no_hives; nh++) {
-	    printf("%c %c %2d %9d 0x%08x <%s>\n", (nh == usehive) ? '*' : ' ',
-		   (hive[nh]->state & HMODE_DIRTY) ? 'D' : ' ',
-		   nh,
-		   hive[nh]->size,
-		   hive[nh]->size, hive[nh]->filename);
-	  }
-	}
+        bp++;
+        skipspace(&bp);
+        if (*bp) {
+          nh = gethex(&bp);
+          if (nh >= 0 && nh < no_hives) {
+            usehive = nh;
+            printf("Switching to hive #%d, named <%s>, size %d [0x%x]\n",
+                   usehive, hive[usehive]->filename,
+                   hive[usehive]->size,
+                   hive[usehive]->size);
+            hdesc = hive[usehive];
+            cdofs = hdesc->rootofs;
+          }
+        } else {
+          for (nh = 0; nh < no_hives; nh++) {
+            printf("%c %c %2d %9d 0x%08x <%s>\n", (nh == usehive) ? '*' : ' ',
+                   (hive[nh]->state & HMODE_DIRTY) ? 'D' : ' ',
+                   nh,
+                   hive[nh]->size,
+                   hive[nh]->size, hive[nh]->filename);
+          }
+        }
         break;
       case MCMD_CD :
-	bp++;
-	skipspace(&bp);
-	newofs = trav_path(hdesc, cdofs+4,bp,TPF_NK);
+        bp++;
+        skipspace(&bp);
+        newofs = trav_path(hdesc, cdofs+4,bp,TPF_NK);
         if (newofs) cdofs = newofs;
-	else printf("Key %s not found!\n",bp);
-	break;
+        else printf("Key %s not found!\n",bp);
+        break;
       case MCMD_CAT:
-	bp++;
-	skipspace(&bp);
-	cat_vk(hdesc,cdofs+4,bp,0);
-	break;
+        bp++;
+        skipspace(&bp);
+        cat_vk(hdesc,cdofs+4,bp,0);
+        break;
       case MCMD_CAT_DPI:
-	bp++;
-	skipspace(&bp);
-	cat_dpi (hdesc, cdofs+4, bp);
-	break;
+        bp++;
+        skipspace(&bp);
+        cat_dpi (hdesc, cdofs+4, bp);
+        break;
       case MCMD_CATHEX:
-	bp++;
-	skipspace(&bp);
-	cat_vk(hdesc,cdofs+4,bp,1);
-	break;
+        bp++;
+        skipspace(&bp);
+        cat_vk(hdesc,cdofs+4,bp,1);
+        break;
       case MCMD_EXPORTKEY :
         bp++;
         skipspace(&bp);
@@ -676,23 +676,23 @@ void regedit_interactive(struct hive *hive[], int no_hives)
         export_key(hdesc, cdofs + 4, bp, file, prefix);
     break;
       case MCMD_STRUCT:
-	bp++;
-	skipspace(&bp);
-	vkofs = cdofs;
-	if (*bp) {
-	  vkofs = gethex(&bp);
-	}
-	parse_block(hdesc,vkofs,2);
-	break;
+        bp++;
+        skipspace(&bp);
+        vkofs = cdofs;
+        if (*bp) {
+          vkofs = gethex(&bp);
+        }
+        parse_block(hdesc,vkofs,2);
+        break;
       case MCMD_DEBUG:
-	if (debugit(hdesc->buffer,hdesc->size)) hdesc->state |= HMODE_DIRTY;
-	break;
+        if (debugit(hdesc->buffer,hdesc->size)) hdesc->state |= HMODE_DIRTY;
+        break;
       case MCMD_QUIT:
         return;
         break;
       default:
-	printf("Unknown command: %s, type ? for help\n",bp);
-	break;
+        printf("Unknown command: %s, type ? for help\n",bp);
+        break;
       }
     }
   }

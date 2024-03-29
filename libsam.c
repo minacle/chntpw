@@ -190,7 +190,7 @@ short sam_handle_accountbits(struct hive *hdesc, int rid, int mode)
 
     for (b=0; b < 15; b++) {
       printf("[%s] %-15.15s | ",
-	     (acb & (1<<b)) ? "X" : " ", acb_fields[b] );
+             (acb & (1<<b)) ? "X" : " ", acb_fields[b] );
       if (b%3 == 2) printf("\n");
     }
 
@@ -614,9 +614,9 @@ struct keyval *sam_get_user_grpids(struct hive *hdesc, int rid)
       nk += 4;
       count = get_val_type(hdesc,nk,"@",TPF_VK_EXACT);
       if (count == -1) {
-	printf("sam_get_user_grpids: Cannot find default value <%s\\@>\n",s);
-	n++;
-	continue;
+        printf("sam_get_user_grpids: Cannot find default value <%s\\@>\n",s);
+        n++;
+        continue;
       }
 
       //  printf("sam_get_user_grpids: User is member of %d groups:\n",count);
@@ -627,14 +627,14 @@ struct keyval *sam_get_user_grpids(struct hive *hdesc, int rid)
       /* It should be 4 bytes for each group */
       // if (gverbose) printf("Data size %d bytes.\n",size);
       if (size != count * 4) {
-	printf("sam_get_user_grpids: DEBUG: Size is not 4 * count! May not matter anyway. Continuing..\n");
+        printf("sam_get_user_grpids: DEBUG: Size is not 4 * count! May not matter anyway. Continuing..\n");
       }
 
       m = get_val2buf(hdesc, NULL, nk, "@", 0, TPF_VK_EXACT);
       if (!m) {
-	printf("sam_get_user_grpids: Could not get value data! Giving up.\n");
-	FREE(sidstr);
-	return(NULL);
+        printf("sam_get_user_grpids: Could not get value data! Giving up.\n");
+        FREE(sidstr);
+        return(NULL);
       }
 
       /* At this point we have a value containing member list from this part of the tree */
@@ -724,12 +724,12 @@ int sam_put_user_grpids(struct hive *hdesc, int rid, struct keyval *val)
       // printf("sam_put_user_grpids: split path: %s\n",s);
       nk = trav_path(hdesc, 0, s, TPF_VK_EXACT);  /* Check if group is in path?? */
       if (nk) {  /* Yup, it is here */
-	entry.data[0] = grp;
-	entry.len = 4;
-	// printf("sam_put_user_grpids: path match for grp ID: %x\n", entry.data[1]);
-	new = (struct keyvala *)reg_valcat( p[pnum], (struct keyval *)&entry);
-	FREE( p[pnum] );
-	p[pnum] = (struct keyval *)new;
+        entry.data[0] = grp;
+        entry.len = 4;
+        // printf("sam_put_user_grpids: path match for grp ID: %x\n", entry.data[1]);
+        new = (struct keyvala *)reg_valcat( p[pnum], (struct keyval *)&entry);
+        FREE( p[pnum] );
+        p[pnum] = (struct keyval *)new;
       }
     }
   }
@@ -770,15 +770,15 @@ int sam_put_user_grpids(struct hive *hdesc, int rid, struct keyval *val)
 
       newkey = add_key(hdesc, nk+4, ks);
       if (!newkey) {
-	fprintf(stderr,"sam_put_user_grpids: ERROR: creating group list key for RID <%08x> under path <%s>\n",rid,news);
-	abort();
+        fprintf(stderr,"sam_put_user_grpids: ERROR: creating group list key for RID <%08x> under path <%s>\n",rid,news);
+        abort();
       }
 
       nk = trav_path(hdesc, 0, s, 0);
 
       if (!add_value(hdesc, nk+4, "@", 0)) {
-	fprintf(stderr,"sam_put_user_grpids: ERROR: creating group list default value for RID <%08x> under path <%s>\n",rid,news);
-	abort();
+        fprintf(stderr,"sam_put_user_grpids: ERROR: creating group list default value for RID <%08x> under path <%s>\n",rid,news);
+        abort();
       }
     }
 
@@ -817,8 +817,8 @@ int sam_put_user_grpids(struct hive *hdesc, int rid, struct keyval *val)
 
       set_val_type(hdesc, nk, "@", TPF_VK_EXACT, newcount);
       if (!put_buf2val(hdesc, p[n], nk, "@", 0, TPF_VK_EXACT) ) {
-	printf("sam_put_user_grpids: Could not set reg value data!\n");
-	return(0);
+        printf("sam_put_user_grpids: Could not set reg value data!\n");
+        return(0);
       }
 
     }
@@ -1243,18 +1243,18 @@ int sam_list_user_groups(struct hive *hdesc, int rid, int check)
     if (!check) {
       c = sam_get_grpC(hdesc, grp);
       if (c) {
-	cd = (struct group_C *)&c->data;
-	grpnamoffs = cd->grpname_ofs + 0x34;
-	grpnamlen  = cd->grpname_len;
+        cd = (struct group_C *)&c->data;
+        grpnamoffs = cd->grpname_ofs + 0x34;
+        grpnamlen  = cd->grpname_len;
 
-	cheap_uni2ascii((char *)cd + grpnamoffs, groupname, grpnamlen);
+        cheap_uni2ascii((char *)cd + grpnamoffs, groupname, grpnamlen);
 
-	printf("= %s (which has %d members)\n",groupname,cd->grp_members);
+        printf("= %s (which has %d members)\n",groupname,cd->grp_members);
 
-	//	get_grp_members_sid(grp, &sidbuf);
+        //      get_grp_members_sid(grp, &sidbuf);
 
       } else {
-	printf("Group info for %x not found!\n",grp);
+        printf("Group info for %x not found!\n",grp);
       }
     }
   }
@@ -1327,7 +1327,7 @@ int sam_list_users(struct hive *hdesc, int readable)
 
     if (v->len < 0xcc) {
       printf("sam_list_users: Value <%s> is too short (only %d bytes) to be a SAM user V-struct!\n",
-	     s, v->len);
+             s, v->len);
     } else {
 
       vpwd = (struct user_V *)&(v->data);
@@ -1337,16 +1337,16 @@ int sam_list_users(struct hive *hdesc, int readable)
       isadm = sam_list_user_groups(hdesc, rid, 1);
 
       if (isadm && rid != 0x1f4) {  /* Found an non-built-in administrator */
-	if (admrid == 0x1f4) admrid = rid;  /* Prefer anything over built-in one */
-	if (rid < admrid) admrid = rid;
+        if (admrid == 0x1f4) admrid = rid;  /* Prefer anything over built-in one */
+        if (rid < admrid) admrid = rid;
       }
 
       if (readable == 1) {
-	printf("| %04x | %-30.30s | %-6s | %-8s |\n",
-	       rid, ex.name, ( isadm ? "ADMIN" : "") , (  acb & 0x8000 ? "dis/lock" : (ntpw_len < 16) ? "*BLANK*" : "")  );
+        printf("| %04x | %-30.30s | %-6s | %-8s |\n",
+               rid, ex.name, ( isadm ? "ADMIN" : "") , (  acb & 0x8000 ? "dis/lock" : (ntpw_len < 16) ? "*BLANK*" : "")  );
       } else if (readable == 0) {
-	printf("%04x:%s:%d:%x:%x\n",
-	       rid, ex.name, isadm , acb, ntpw_len );
+        printf("%04x:%s:%d:%x:%x\n",
+               rid, ex.name, isadm , acb, ntpw_len );
       }
 
 
@@ -1388,7 +1388,7 @@ char *sam_get_username(struct hive *hdesc, int rid)
   vlen = value->len;
   if (vlen < 0xcc) {
     printf(" sam_get_username: Value <%s> is too short (only %d bytes) to be a SAM user V-struct!\n",
-	   s, vlen);
+           s, vlen);
     FREE(value);
     return(NULL);
   }
@@ -1468,17 +1468,17 @@ char *sam_get_username_from_sid(struct hive *hdesc, struct sid_binary *sid)
 
     if (sid->sections == 1) {
       if (sid->authority == 5) { /* We only handle S-1-5 (NTAUTHORITY) known names yet */
-	str = str_dup("NT AUTHORITY\\");
-	for (i = 0; ntauthority_table[i].val; i++) {
-	  if (rid == ntauthority_table[i].val) {
-	    str = str_cat(str, ntauthority_table[i].name);
-	    return(str);
-	  }
+        str = str_dup("NT AUTHORITY\\");
+        for (i = 0; ntauthority_table[i].val; i++) {
+          if (rid == ntauthority_table[i].val) {
+            str = str_cat(str, ntauthority_table[i].name);
+            return(str);
+          }
 
-	}
+        }
 
       } else {  /* Not NT AUTHORITY */
-	return(sam_sid_to_string(sid));
+        return(sam_sid_to_string(sid));
       }
     } /* sections */
     return(sam_sid_to_string(sid));
@@ -1557,30 +1557,30 @@ void sam_list_groups(struct hive *hdesc, int listmembers, int human) {
 
       c = get_val2buf(hdesc, NULL, ex.nkoffs+4, "C", 0, TPF_VK_EXACT);
       if (c) {
-	cd = (struct group_C *)&c->data;
-	grpnamoffs = cd->grpname_ofs + 0x34;
-	grpnamlen  = cd->grpname_len;
+        cd = (struct group_C *)&c->data;
+        grpnamoffs = cd->grpname_ofs + 0x34;
+        grpnamlen  = cd->grpname_len;
 
-	cheap_uni2ascii((char *)cd + grpnamoffs, groupname, grpnamlen);
+        cheap_uni2ascii((char *)cd + grpnamoffs, groupname, grpnamlen);
 
-	if (human) printf("=== Group #%4x : %s\n",grp,groupname);
-	else if (!listmembers) printf("%x:%s:%d\n",grp,groupname,cd->grp_members);
+        if (human) printf("=== Group #%4x : %s\n",grp,groupname);
+        else if (!listmembers) printf("%x:%s:%d\n",grp,groupname,cd->grp_members);
 
-	if (listmembers) {
-	  sam_get_grp_members_sid(hdesc, grp, &sids);
+        if (listmembers) {
+          sam_get_grp_members_sid(hdesc, grp, &sids);
 
-	  for (i = 0; sids[i].sidptr; i++) {
-	    str = sam_sid_to_string(sids[i].sidptr);
-	    username = sam_get_username_from_sid(hdesc, sids[i].sidptr);
-	    if (human) printf("  %3d | %04x | %-31s | <%s>\n", i, sids[i].sidptr->array[sids[i].sidptr->sections-1], username, str);
-	    else printf("%x:%s:%d:%x:%s:%s\n", grp, groupname, i, sids[i].sidptr->array[sids[i].sidptr->sections-1], username, str);
+          for (i = 0; sids[i].sidptr; i++) {
+            str = sam_sid_to_string(sids[i].sidptr);
+            username = sam_get_username_from_sid(hdesc, sids[i].sidptr);
+            if (human) printf("  %3d | %04x | %-31s | <%s>\n", i, sids[i].sidptr->array[sids[i].sidptr->sections-1], username, str);
+            else printf("%x:%s:%d:%x:%s:%s\n", grp, groupname, i, sids[i].sidptr->array[sids[i].sidptr->sections-1], username, str);
 
-	    FREE(username);
-	    FREE(str);
+            FREE(username);
+            FREE(str);
 
-	  }
-	  sam_free_sid_array(sids);
-	}
+          }
+          sam_free_sid_array(sids);
+        }
       } /* if c */
 
     }
@@ -1666,7 +1666,7 @@ int sam_reset_pw(struct hive *hdesc, int rid)
    vlen = value->len;
    if (vlen < 0xcc) {
      printf(" sam_reset_pw: Value <%s> is too short (only %d bytes) to be a SAM user V-struct!\n",
-	    s, vlen);
+            s, vlen);
      return(1);
    }
 
@@ -1777,14 +1777,14 @@ int sam_reset_all_pw(struct hive *hdesc, int list)
 
     if (v->len < 0xcc) {
       printf("sam_reset_all_pw: Value <%s> is too short (only %d bytes) to be a SAM user V-struct!\n",
-	     s, v->len);
+             s, v->len);
     } else {
 
       isadm = sam_list_user_groups(hdesc, rid, 1);
 
       if (isadm) {
-	if (list) printf("Reset user :%04x:%s\n", rid, ex.name );
-	fail |= sam_reset_pw(hdesc, rid);
+        if (list) printf("Reset user :%04x:%s\n", rid, ex.name );
+        fail |= sam_reset_pw(hdesc, rid);
       }
 
 

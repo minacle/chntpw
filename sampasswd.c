@@ -98,29 +98,29 @@ int do_reset(char *user, int inrid, int verb)
 void usage(void)
 {
   printf(" [-r|-l] [-H] -u <user> <samhive>\n"
-	 "Reset password or list users in SAM database\n"
+         "Reset password or list users in SAM database\n"
          "Mode:\n"
-	 "   -r = reset users password\n"
+         "   -r = reset users password\n"
          "   -l = list users in sam\n"
          "Parameters:\n"
          "   <user> can be given as a username or a RID in hex with 0x in front\n"
          "   Example:\n"
          "   -r -u theboss -> resets password of user named 'theboss' if found\n"
          "   -r -u 0x3ea -> resets password for user with RID 0x3ea (hex)\n"
-	 "   -r -a -> Reset password of all users in administrators group (0x220)\n"
-	 "   -r -f -> Reset password of admin user with lowest RID\n"
-	 "            not counting built-in admin (0x1f4) unless it is the only admin\n"
+         "   -r -a -> Reset password of all users in administrators group (0x220)\n"
+         "   -r -f -> Reset password of admin user with lowest RID\n"
+         "            not counting built-in admin (0x1f4) unless it is the only admin\n"
          "   Usernames with international characters usually fails to be found,\n"
          "   please use RID number instead\n"
-	 "   If success, there will be no output, and exit code is 0\n"
-	 "Options:\n"
-	 "   -H : For list: Human readable listing (default is parsable table)\n"
-	 "   -H : For reset: Will output confirmation message if success\n"
-	 "   -N : No allocate mode, only allow edit of existing values with same size\n"
-	 "   -E : No expand mode, do not expand hive file (safe mode)\n"
-	 "   -t : Debug trace of allocated blocks\n"
-	 "   -v : Some more verbose messages/debug\n"
-	 );
+         "   If success, there will be no output, and exit code is 0\n"
+         "Options:\n"
+         "   -H : For list: Human readable listing (default is parsable table)\n"
+         "   -H : For reset: Will output confirmation message if success\n"
+         "   -N : No allocate mode, only allow edit of existing values with same size\n"
+         "   -E : No expand mode, do not expand hive file (safe mode)\n"
+         "   -t : Debug trace of allocated blocks\n"
+         "   -v : Some more verbose messages/debug\n"
+         );
 }
 
 
@@ -189,7 +189,7 @@ int main(int argc, char **argv)
   }
   do {
     if (!(hive[no_hives] = openHive(hivename,
-				    HMODE_RW|mode))) {
+                                    HMODE_RW|mode))) {
       fprintf(stderr,"%s: ERROR: Unable to open/read registry hive, cannot continue\n",argv[0]);
       exit(1);
     }
@@ -205,7 +205,7 @@ int main(int argc, char **argv)
 
   if (H_SAM == -1) {
     fprintf(stderr,"%s: WARNING: Hive file does not look like SAM, but continuing anyway in case detection was wrong\n"
-	    "%s: WARNING: If it really is not a SAM file you will get strange errors or bad results\n",argv[0],argv[0]);
+            "%s: WARNING: If it really is not a SAM file you will get strange errors or bad results\n",argv[0],argv[0]);
     H_SAM = 0;
   }
 
@@ -221,20 +221,20 @@ int main(int argc, char **argv)
     if (all) {
       ret = sam_reset_all_pw(hive[H_SAM], human);
       if (ret) {
-	fprintf(stderr,"%s: ERROR: Failed reset password of ALL users\n",argv[0]);
+        fprintf(stderr,"%s: ERROR: Failed reset password of ALL users\n",argv[0]);
       }
     } else if (first) {
       adm = sam_list_users(hive[H_SAM], 2);
       if (!adm) {
-	fprintf(stderr,"%s: ERROR: Unable to reset, no admin users found\n",argv[0]);
+        fprintf(stderr,"%s: ERROR: Unable to reset, no admin users found\n",argv[0]);
       } else {
-	//	printf("Resetting password of user with RID %x\n",adm);
-	ret = do_reset(usr, adm, human);
+        //      printf("Resetting password of user with RID %x\n",adm);
+        ret = do_reset(usr, adm, human);
       }
     } else {
       ret = do_reset(usr, 0, human);
       if (ret) {
-	fprintf(stderr,"%s: ERROR: Failed reset password for %s\n",argv[0],usr);
+        fprintf(stderr,"%s: ERROR: Failed reset password for %s\n",argv[0],usr);
       }
     }
   }

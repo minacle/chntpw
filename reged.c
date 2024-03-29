@@ -54,22 +54,22 @@ void usage(void)
 {
   printf("\nModes:\n"
          "-x <registryhivefile> <prefixstring> <key> <output.reg>\n"
-	 "   Xport. Where <prefixstring> for example is HKEY_LOCAL_MACHINE\\SOFTWARE\n"
-	 "   <key> is key to dump (recursively), \\ or \\\\ means all keys in hive\n"
-	 "   Only one .reg and one hive file supported at the same time\n"
-	 "-I <registryhivefile> <prefixstring> <input.reg>\n"
-	 "   Import from .reg file. Where <prefixstring> for example is HKEY_LOCAL_MACHINE\\SOFTWARE\n"
-	 "   Only one .reg and one hive file supported at the same time\n"
-	 "-e <registryhive> ...\n"
-	 "   Interactive edit one or more of registry files\n\n"
-	 "Options:\n"
-	 "-L : Log changed filenames to /tmp/changed, also auto-saves\n"
-	 "-C : Auto-save (commit) changed hives without asking\n"
-	 "-N : No allocate mode, only allow edit of existing values with same size\n"
-	 "-E : No expand mode, do not expand hive file (safe mode)\n"
-	 "-t : Debug trace of allocated blocks\n"
-	 "-v : Some more verbose messages\n"
-	 );
+         "   Xport. Where <prefixstring> for example is HKEY_LOCAL_MACHINE\\SOFTWARE\n"
+         "   <key> is key to dump (recursively), \\ or \\\\ means all keys in hive\n"
+         "   Only one .reg and one hive file supported at the same time\n"
+         "-I <registryhivefile> <prefixstring> <input.reg>\n"
+         "   Import from .reg file. Where <prefixstring> for example is HKEY_LOCAL_MACHINE\\SOFTWARE\n"
+         "   Only one .reg and one hive file supported at the same time\n"
+         "-e <registryhive> ...\n"
+         "   Interactive edit one or more of registry files\n\n"
+         "Options:\n"
+         "-L : Log changed filenames to /tmp/changed, also auto-saves\n"
+         "-C : Auto-save (commit) changed hives without asking\n"
+         "-N : No allocate mode, only allow edit of existing values with same size\n"
+         "-E : No expand mode, do not expand hive file (safe mode)\n"
+         "-t : Debug trace of allocated blocks\n"
+         "-v : Some more verbose messages\n"
+         );
 }
 
 
@@ -169,9 +169,9 @@ int main(int argc, char **argv)
     hivename = argv[optind+no_hives];
     do {
       if (!(hive[no_hives] = openHive(hivename,
-				      HMODE_RW|mode))) {
-	printf("Unable to open/read a hive, exiting..\n");
-	exit(1);
+                                      HMODE_RW|mode))) {
+        printf("Unable to open/read a hive, exiting..\n");
+        exit(1);
       }
       no_hives++;
       hivename = argv[optind+no_hives];
@@ -185,13 +185,13 @@ int main(int argc, char **argv)
     printf("\nHives that have changed:\n #  Name\n");
     for (il = 0; il < no_hives; il++) {
       if (hive[il]->state & HMODE_DIRTY) {
-	if (!logchange && !autocommit) {
-	  printf("%2d  <%s>",il,hive[il]->filename);
-	  if (hive[il]->state & HMODE_DIDEXPAND)
-	    printf(" WARNING: File was expanded! Experimental! Use at own risk!\n");
-	  printf("\n");
-	}
-	d = 1;
+        if (!logchange && !autocommit) {
+          printf("%2d  <%s>",il,hive[il]->filename);
+          if (hive[il]->state & HMODE_DIDEXPAND)
+            printf(" WARNING: File was expanded! Experimental! Use at own risk!\n");
+          printf("\n");
+        }
+        d = 1;
       }
     }
     if (d) {
@@ -199,28 +199,28 @@ int main(int argc, char **argv)
       /* Thus we assume confirmations are done externally if they ask for a list of changes */
       if (!logchange && !autocommit) fmyinput("Commit changes to registry? (y/n) [n] : ",yn,3);
       if (*yn == 'y' || logchange || autocommit) {
-	if (logchange) {
-	  ch = fopen("/tmp/changed","w");
-	}
-	for (il = 0; il < no_hives; il++) {
-	  if (hive[il]->state & HMODE_DIRTY) {
-	    printf("%2d  <%s> - ",il,hive[il]->filename);
-	    if (!writeHive(hive[il])) {
-	      printf("OK ");
-	      if (hive[il]->state & HMODE_DIDEXPAND)
-		printf(" WARNING: File was expanded! Experimental! Use at own risk!\n");
-	      printf("\n");
-	      if (logchange) fprintf(ch,"%s ",hive[il]->filename);
-	      dd = 2;
-	    }
-	  }
-	}
-	if (logchange) {
-	  fprintf(ch,"\n");
-	  fclose(ch);
-	}
+        if (logchange) {
+          ch = fopen("/tmp/changed","w");
+        }
+        for (il = 0; il < no_hives; il++) {
+          if (hive[il]->state & HMODE_DIRTY) {
+            printf("%2d  <%s> - ",il,hive[il]->filename);
+            if (!writeHive(hive[il])) {
+              printf("OK ");
+              if (hive[il]->state & HMODE_DIDEXPAND)
+                printf(" WARNING: File was expanded! Experimental! Use at own risk!\n");
+              printf("\n");
+              if (logchange) fprintf(ch,"%s ",hive[il]->filename);
+              dd = 2;
+            }
+          }
+        }
+        if (logchange) {
+          fprintf(ch,"\n");
+          fclose(ch);
+        }
       } else {
-	printf("Not written!\n\n");
+        printf("Not written!\n\n");
       }
     } else {
       printf("None!\n\n");
